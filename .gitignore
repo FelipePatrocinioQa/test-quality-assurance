@@ -1,0 +1,17 @@
+# Node modules
+node_modules/
+
+# Cypress screenshots and videos
+cypress/screenshots/
+cypress/videos/
+
+# Logs
+*.log
+
+# Relatórios
+reports/
+coverage/
+
+# Sistema operacional
+.DS_Store
+Thumbs.db

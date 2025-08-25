@@ -1,5 +1,6 @@
 {
   "dependencies": {
-    "cypress": "^15.0.0"
+    "cypress": "^15.0.0",
+    "cypress-plugin-api": "^2.11.2"
   }
 }

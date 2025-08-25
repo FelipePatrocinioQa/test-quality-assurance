@@ -21,7 +21,9 @@ cd test-quality-assurance
 # Instale as dependências
 npm install cypress --save-
 
+
 # Plugins
+npm i cypress-plugin-api (Obrigatório)
 Brackets Pair Colorizer
 Material Icon Theme
 ES6 Mocha Snippets

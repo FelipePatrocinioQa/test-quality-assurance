@@ -6,6 +6,7 @@ Este projeto tem como objetivo demonstrar, de forma prática e didática, a auto
 ## Requisitos
 - Node.js versão 16 ou superior
 - npm versão XX ou superior
+- npm install mochawesome mochawesome-merge mochawesome-report-generator --save-dev
 - Cypress versão XX ou superior
 - Outros requisitos necessários
 

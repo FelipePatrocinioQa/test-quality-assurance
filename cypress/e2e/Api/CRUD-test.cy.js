@@ -1,9 +1,9 @@
 import 'cypress-plugin-api'
 
-import send_body_sucesso from '../../fixtures/payload/send/send_body_post_200.json';
+import send_body_sucesso from '../../../fixtures/api/send_body_sucesso.json';
 
-describe('Teste de API', () => {
-  it('Deve criar usuário e retornar sucesso (POST)', () => {
+describe('Teste de API - cenários positivos', () => {
+  it('[201 Sucess] Deve criar usuário e retornar sucesso (POST)', () => {
     cy.api({
       method: 'POST',
       url: '/post',
@@ -13,7 +13,7 @@ describe('Teste de API', () => {
       expect(response.status).to.eq(200);
       });
   });
-  it('Deve buscar usuário e retornar sucesso (GET)', () => {
+  it('[200 OK] Deve buscar usuário e retornar sucesso (GET)', () => {
     cy.api({
       method: 'GET',
       url: '/get',
@@ -22,7 +22,7 @@ describe('Teste de API', () => {
       expect(response.status).to.eq(200);
     });
     });
-  it('Deve alterar usuário e retornar sucesso (PUT)', () => {
+  it('[201] Deve alterar usuário e retornar sucesso (PUT)', () => {
     cy.api({
       method: 'PUT',
       url: '/put',
@@ -31,7 +31,7 @@ describe('Teste de API', () => {
       expect(response.status).to.eq(200);
     });
     });
-  it('Deve deletar usuário e retornar sucesso (DELETE)', () => {
+  it('[204 No Content] Deve deletar usuário e retornar sucesso (DELETE)', () => {
     cy.api({
       method: 'DELETE',
       url: '/delete',
@@ -41,42 +41,42 @@ describe('Teste de API', () => {
     });
     });
 });
-describe('Teste de API 2', () => {
-  it('Deve criar usuário e retornar sucesso (POST)', () => {
+describe('Teste de API - Cenários negativos', () => {
+  it('[404 not found] Enviar uma requisição com a url inválida (POST)', () => {
     cy.api({
       method: 'POST',
-      url: '/post',
+      url: '/post2',
       body: send_body_sucesso,
       failOnStatusCode: false
     }).then((response) => {
-      expect(response.status).to.eq(200);
+      expect(response.status).to.eq(404);
       });
   });
-  it('Deve buscar usuário e retornar sucesso (GET)', () => {
+  it('[404 not found] Enviar uma requisição com a url inválida (GET)', () => {
     cy.api({
       method: 'GET',
-      url: '/get',
+      url: '/get2',
       failOnStatusCode: false
     }).then((response) => {
-      expect(response.status).to.eq(200);
+      expect(response.status).to.eq(404);
     });
     });
-  it('Deve alterar usuário e retornar sucesso (PUT)', () => {
+  it('[404 not found] Enviar uma requisição com a url inválida (PUT)', () => {
     cy.api({
       method: 'PUT',
-      url: '/put',
+      url: '/put2',
       failOnStatusCode: false
     }).then((response) => {
-      expect(response.status).to.eq(200);
+      expect(response.status).to.eq(404);
     });
     });
-  it('Deve deletar usuário e retornar sucesso (DELETE)', () => {
+  it('[404 not found] Enviar uma requisição com a url inválida (DELETE)', () => {
     cy.api({
       method: 'DELETE',
-      url: '/delete',
+      url: '/delete2',
       failOnStatusCode: false
     }).then((response) => {
-      expect(response.status).to.eq(200);
+      expect(response.status).to.eq(404);
     });
     });
 });

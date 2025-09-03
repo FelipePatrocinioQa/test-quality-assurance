@@ -34,8 +34,8 @@ Cypress Helper
 
 test-quality-assurance/
 ├── cypress/
-│   ├── integration/   # Testes automatizados
-│   ├── fixtures/      # Dados de teste
+│   ├── e2e/   # Testes automatizados de apis e Web
+│   ├── fixtures/      # Dados de teste payload e massas de teste.
 │   ├── support/       # Comandos e configurações
 ├── [README.md](http://_vscodecontentref_/0)
 ├── package.json

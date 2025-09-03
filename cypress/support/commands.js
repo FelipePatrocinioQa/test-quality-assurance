@@ -8,5 +8,3 @@ Cypress.Commands.add('postApi', (endpoint, body) => {
     failOnStatusCode: false
   });
 });
-
-// ...existing code...

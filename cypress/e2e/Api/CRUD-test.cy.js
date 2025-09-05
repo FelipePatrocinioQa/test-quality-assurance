@@ -1,9 +1,9 @@
 import 'cypress-plugin-api'
 
-import send_body_sucesso from '../../../fixtures/api/send_body_sucesso.json';
+import send_body_sucesso from '../../fixtures/payload/send/send_body_post_200.json'
 
-describe('Teste de API - cenários positivos', () => {
-  it('[201 Sucess] Deve criar usuário e retornar sucesso (POST)', () => {
+describe.only('Teste de API - cenários positivos', () => {
+  it.only('[201 Sucess] Deve criar usuário e retornar sucesso (POST)', () => {
     cy.api({
       method: 'POST',
       url: '/post',

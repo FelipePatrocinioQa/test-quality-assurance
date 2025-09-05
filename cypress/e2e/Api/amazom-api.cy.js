@@ -1,7 +1,7 @@
 import 'cypress-plugin-api'
 
-describe('Amazon Data API - Cenário Positivo', () => {
-  it('Deve buscar produtos relacionados a Phone com sucesso', () => {
+describe.only('Amazon Data API - Cenário Positivo', () => {
+  it.only('Deve buscar produtos relacionados a Phone com sucesso', () => {
     cy.api({
       method: 'GET',
       url: 'https://real-time-amazon-data.p.rapidapi.com/search?query=Phone&page=1&country=US&sort_by=RELEVANCE&product_condition=ALL&is_prime=false&deals_and_discounts=NONE',

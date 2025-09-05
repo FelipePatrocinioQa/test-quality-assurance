@@ -6,6 +6,14 @@
   "devDependencies": {
     "mochawesome": "^7.1.3",
     "mochawesome-merge": "^5.0.0",
-    "mochawesome-report-generator": "^6.2.0"
+    "mochawesome-report-generator": "^6.2.0",
+    "open": "^10.2.0"
+  },
+  "scripts": {
+    "test": "cypress run",
+    "merge-report": "npx mochawesome-merge \"cypress/reports/mochawesome*.json\" > cypress/reports/merged.json",
+    "generate-report": "npx mochawesome-report-generator cypress/reports/merged.json -o cypress/reports/html --inline",
+    "report": "npm run merge-report && npm run generate-report",
+    "test:report": "node run-and-report.js"
   }
 }

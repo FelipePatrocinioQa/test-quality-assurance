@@ -10,10 +10,11 @@
     "open": "^10.2.0"
   },
   "scripts": {
-    "test": "cypress run",
-    "merge-report": "npx mochawesome-merge \"cypress/reports/mochawesome*.json\" > cypress/reports/merged.json",
+    "clean": "node clean-reports.js",
+    "test": "npm run clean && cypress run",
+    "merge-report": "npx mochawesome-merge \"cypress/reports/**/*.json\" > cypress/reports/merged.json",
     "generate-report": "npx mochawesome-report-generator cypress/reports/merged.json -o cypress/reports/html --inline",
-    "report": "npm run merge-report && npm run generate-report",
-    "test:report": "node run-and-report.js"
+    "report": "npm run clean && npm run test && npm run merge-report && npm run generate-report",
+    "test:report": "npm run clean && node run-and-report.js"
   }
 }

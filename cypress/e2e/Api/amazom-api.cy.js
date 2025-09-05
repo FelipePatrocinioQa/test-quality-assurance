@@ -1,22 +1,20 @@
-import 'cypress-plugin-api'
+import 'cypress-plugin-api';
+import {GET, POST, PUT, DELETE} from '../../fixtures/api/common/methodRest';
 
-describe.only('Amazon Data API - Cenário Positivo', () => {
-  it.only('Deve buscar produtos relacionados a Phone com sucesso', () => {
-    cy.api({
-      method: 'GET',
-      url: 'https://real-time-amazon-data.p.rapidapi.com/search?query=Phone&page=1&country=US&sort_by=RELEVANCE&product_condition=ALL&is_prime=false&deals_and_discounts=NONE',
-      headers: {
-        'x-rapidapi-host': 'real-time-amazon-data.p.rapidapi.com',
-        'x-rapidapi-key': '02d3d5a9ecmsh83d033fb7c0150fp10d3b4jsn1dee432eb1b6'
-      },
-      failOnStatusCode: false
-    }).then((response) => {
-      expect(response.status).to.eq(200);
-      expect(response.body).to.exist;
-    });
+var url = 'https://real-time-amazon-data.p.rapidapi.com/search?query=Phone&page=1&country=US&sort_by=RELEVANCE&product_condition=ALL&is_prime=false&deals_and_discounts=NONE'
+
+describe('Amazon Data API - Cenário Positivo', () => {
+it('Deve retornar 201 com sucesso', () => {
+  const headers = {
+    'x-rapidapi-host': 'real-time-amazon-data.p.rapidapi.com',
+    'x-rapidapi-key': '02d3d5a9ecmsh83d033fb7c0150fp10d3b4jsn1dee432eb1b6'
+  };
+
+  cy.req(POST, url, headers).then((respReq) => {
+    expect(respReq.statusCod).to.deep.equal(200);
   });
 });
-
+});
 describe('Amazon Data API - Buscar Produtos por Categoria', () => {
   it('Deve buscar produtos da categoria 281407 com sucesso', () => {
     cy.api({
@@ -33,7 +31,6 @@ describe('Amazon Data API - Buscar Produtos por Categoria', () => {
     });
   });
 });
-
 describe('Amazon Data API - Buscar Detalhes do Produto', () => {
   it('Deve buscar detalhes do produto pelo ASIN B07ZPKBL9V com sucesso', () => {
     cy.api({

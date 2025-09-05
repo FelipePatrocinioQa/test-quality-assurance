@@ -1,13 +1,25 @@
 // ...existing code...
 
-Cypress.Commands.add('postApi', (endpoint, body) => {
-  cy.request({
-    method: 'POST',
-    url: endpoint,
-    body: body,
+Cypress.Commands.add('req', (method, url, token, body = {}, headers = {}) => {
+  const finalHeaders = {
+    ...headers,
+    Authorization: token ? `Bearer ${token}` : undefined
+  };
+
+  return cy.api({
+    method,
+    url,
+    body,
+    headers: finalHeaders,
     failOnStatusCode: false
+  }).then((response) => {
+    return {
+      statusCod: response.status,
+      retBody: response.body
+    };
   });
 });
+
 
 Cypress.Commands.add('criaMockToken', () => {
   cy.fixture('mock-body-portal').then((mockBodyPortal) => {

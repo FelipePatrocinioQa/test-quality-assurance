@@ -1,0 +1,44 @@
+{
+  "validLogin": {
+    "email": "fulano@qa.com",
+    "password": "teste"
+  },
+  "invalidLogin": {
+    "email": "invalido@qa.com",
+    "password": "senhaErrada"
+  },
+  "validUser": {
+    "nome": "Usuário Automação",
+    "email": "automacao@mail.com",
+    "password": "teste",
+    "administrador": "true"
+  },
+  "updatedUser": {
+    "nome": "Usuário Atualizado",
+    "email": "atualizacao@mail.com",
+    "password": "teste",
+    "administrador": "true"
+  },
+  "existingUserUpdate": {
+    "nome": "Fulano da Silva",
+    "email": "beltrano@qa.com.br",
+    "password": "teste",
+    "administrador": "true"
+  },
+  "invalidUser": {
+    "nome": "",
+    "email": "",
+    "password": "",
+    "administrador": "true"
+  },
+  "emailDomain": "mail.com",
+  "emailPrefixes": {
+    "validUser": "automacao",
+    "updatedUser": "atualizacao"
+  },
+  "userIds": {
+    "sample": "0uxuPY0cbmQhpEz1",
+    "withCart": "0uxuPY0cbmQhpEz1",
+    "invalid": "id-inexistente-123"
+  }
+}

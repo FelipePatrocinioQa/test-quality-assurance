@@ -1,48 +1,95 @@
-# test-quality-assurance
+# Testes de API com Cypress
 
-## Descrição
-Este projeto tem como objetivo demonstrar, de forma prática e didática, a automação de testes de APIs utilizando Cypress. Aqui você encontrará desde as etapas iniciais de instalação do Cypress até a execução dos testes automatizados, incluindo a geração de relatórios detalhados com métricas sobre testes bem-sucedidos e bugs encontrados. A estrutura do projeto foi pensada para facilitar o aprendizado, a manutenção e a escalabilidade dos testes, servindo como referência para equipes de QA e desenvolvedores que desejam implementar testes automatizados de APIs em seus
+## Visão geral
+
+Projeto de automação da API de usuários Serverest, cobrindo autenticação, consulta, cadastro, atualização e exclusão de usuários, com cenários positivos e negativos. Os testes usam Cypress e geram relatórios Mochawesome.
 
 ## Requisitos
-- Node.js versão 16 ou superior
-- npm versão XX ou superior
-- npm install mochawesome mochawesome-merge mochawesome-report-generator --save-dev
-- Cypress versão XX ou superior
-- Outros requisitos necessários
+
+- Node.js 20, 22 ou 24+
+- npm 9+
 
 ## Instalação
 
 ```bash
-# Clone o repositório
-git clone https://github.com/seu-usuario/test-quality-assurance.git
+npm install
+```
 
-# Acesse a pasta do projeto
-cd test-quality-assurance
+## Ambientes
 
-# Instale as dependências
-npm install cypress --save-
+As URLs ficam centralizadas em `cypress/config/environments.js`. O ambiente é selecionado pela variável `TEST_ENVIRONMENT`; o padrão é `dev`.
 
+| Ambiente | URL / configuração |
+| --- | --- |
+| `local` | `http://localhost:3000` |
+| `dev` | `https://serverest.dev` |
+| `uat` | URL informada pela variável `UAT_URL` |
 
-# Plugins
-npm i cypress-plugin-api (Obrigatório)
-Brackets Pair Colorizer
-Material Icon Theme
-ES6 Mocha Snippets
-Add Only
-Fold Plus
-Cypress Helper
+No PowerShell, selecione local ou UAT antes de executar os testes:
 
-test-quality-assurance/
-├── cypress/
-│   ├── e2e/   # Testes automatizados de apis e Web
-│   ├── fixtures/      # Dados de teste payload e massas de teste.
-│   ├── support/       # Comandos e configurações
-├── [README.md](http://_vscodecontentref_/0)
-├── package.json
-└── ...
+```powershell
+$env:TEST_ENVIRONMENT = 'local'
+npm.cmd test
+```
 
-# Executar Cypress em modo interativo
-npx cypress open
+```powershell
+$env:TEST_ENVIRONMENT = 'uat'
+$env:UAT_URL = 'https://seu-endereco-uat'
+npm.cmd test
+```
 
-# Executar Cypress em modo headless
-npx cypress run
+O projeto falha com uma mensagem explícita se UAT for selecionado sem `UAT_URL`. Para voltar ao ambiente padrão, remova `TEST_ENVIRONMENT` da sessão ou defina-o como `dev`.
+
+## Execução
+
+Executar os testes em modo headless:
+
+```bash
+npm test
+```
+
+Abrir o Cypress interativo:
+
+```bash
+npm run test:headed
+```
+
+Executar os testes e gerar/mesclar os relatórios:
+
+```bash
+npm run report
+```
+
+O relatório HTML e os arquivos JSON são gravados em `cypress/reports`; o relatório mesclado é gerado em `cypress/reports/html`.
+
+> Os scripts `test` e `test:ci` usam `|| true` para permitir a geração do relatório mesmo quando há cenários com falha. Por isso, confira o resumo do Cypress e o relatório; o código de saída do npm não indica sozinho que todos os testes passaram.
+
+## Organização
+
+| Arquivo/pasta | Responsabilidade |
+| --- | --- |
+| `cypress/config/environments.js` | URLs dos ambientes local, dev e UAT |
+| `cypress/fixtures/api/common/methodRest.js` | Constantes dos métodos HTTP |
+| `cypress/fixtures/api/common/endpoints.js` | Caminhos dos endpoints |
+| `cypress/fixtures/api/common/headers.js` | Headers JSON e funções de autorização |
+| `cypress/fixtures/payload/send/user-api-bodies.json` | Bodies e dados fixos usados nos cenários de usuários |
+| `cypress/e2e/Api/CRUD-test.cy.js` | Cenários de teste da API de usuários |
+| `cypress/support/commands.js` | Comandos Cypress reutilizáveis |
+| `cypress.config.js` | Seleção do ambiente, configuração do Cypress e Mochawesome |
+
+Os e-mails dos usuários criados pelos testes são gerados com valores únicos a partir dos dados do fixture.
+
+## Cobertura
+
+- Login válido e credenciais inválidas
+- Listagem de usuários
+- Cadastro válido e rejeição de campos obrigatórios vazios
+- Consulta de usuário por ID e consulta de ID inexistente
+- Atualização de usuário
+- Exclusão de usuário e rejeição de exclusão quando há carrinho associado
+
+## Integração contínua
+
+O workflow `.github/workflows/api-tests.yml` executa `npm run test:ci` em push para `main`/`master` e em pull requests, e publica `cypress/reports` como artefato.
+
+Os workflows usam Node.js 20, compatível com a versão do Cypress instalada neste projeto.

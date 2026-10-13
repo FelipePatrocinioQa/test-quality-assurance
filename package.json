@@ -11,10 +11,12 @@
   },
   "scripts": {
     "clean": "node clean-reports.js",
-    "test": "npm run clean && cypress run",
-    "merge-report": "npx mochawesome-merge \"cypress/reports/**/*.json\" > cypress/reports/merged.json",
+    "test": "npm run clean && cypress run --reporter mochawesome --reporter-options \"reportDir=cypress/reports,overwrite=false,html=true,json=true\" || true",
+    "test:headed": "npm run clean && cypress open",
+    "merge-report": "npx mochawesome-merge \"cypress/reports/*.json\" > cypress/reports/merged.json",
     "generate-report": "npx mochawesome-report-generator cypress/reports/merged.json -o cypress/reports/html --inline",
     "report": "npm run clean && npm run test && npm run merge-report && npm run generate-report",
-    "test:report": "npm run clean && node run-and-report.js"
+    "test:report": "npm run clean && node run-and-report.js",
+    "test:ci": "npm run clean && cypress run --reporter mochawesome --reporter-options \"reportDir=cypress/reports,overwrite=false,html=true,json=true\" || true"
   }
 }

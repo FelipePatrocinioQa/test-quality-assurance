@@ -1,95 +1,157 @@
-# Testes de API com Cypress
+# 🧪 Automação de API com Cypress
 
-## Visão geral
+Projeto de testes automatizados para a [API Serverest](https://serverest.dev/), com foco em qualidade, manutenção simples e visibilidade dos resultados.
 
-Projeto de automação da API de usuários Serverest, cobrindo autenticação, consulta, cadastro, atualização e exclusão de usuários, com cenários positivos e negativos. Os testes usam Cypress e geram relatórios Mochawesome.
+![Node.js 20+](https://img.shields.io/badge/Node.js-20%2B-339933?logo=node.js&logoColor=white)
+![Cypress 15](https://img.shields.io/badge/Cypress-15-17202C?logo=cypress&logoColor=white)
+![Mochawesome](https://img.shields.io/badge/Reports-Mochawesome-6A4C93)
 
-## Requisitos
+## ✨ O que o projeto demonstra
 
-- Node.js 20, 22 ou 24+
-- npm 9+
+- Testes de API positivos e negativos para autenticação e CRUD de usuários.
+- Seleção de ambientes local, dev e UAT sem editar os testes.
+- Métodos HTTP, endpoints, headers e payloads centralizados para facilitar manutenção.
+- Relatórios HTML e JSON com Mochawesome.
+- Execução automatizada por GitHub Actions.
 
-## Instalação
+## 🚀 Comece em poucos passos
+
+### Ferramentas
+
+- [Node.js 20, 22 ou 24+](https://nodejs.org/en/download/) e npm (incluído no instalador do Node.js).
+- [Cypress: instalação e primeiros passos](https://docs.cypress.io/app/get-started/install-cypress).
+- [Visual Studio Code](https://code.visualstudio.com/download) é opcional, mas recomendado.
+
+### Instalar dependências
+
+Na raiz do projeto:
 
 ```bash
-npm install
+npm ci
 ```
 
-## Ambientes
-
-As URLs ficam centralizadas em `cypress/config/environments.js`. O ambiente é selecionado pela variável `TEST_ENVIRONMENT`; o padrão é `dev`.
-
-| Ambiente | URL / configuração |
-| --- | --- |
-| `local` | `http://localhost:3000` |
-| `dev` | `https://serverest.dev` |
-| `uat` | URL informada pela variável `UAT_URL` |
-
-No PowerShell, selecione local ou UAT antes de executar os testes:
-
-```powershell
-$env:TEST_ENVIRONMENT = 'local'
-npm.cmd test
-```
-
-```powershell
-$env:TEST_ENVIRONMENT = 'uat'
-$env:UAT_URL = 'https://seu-endereco-uat'
-npm.cmd test
-```
-
-O projeto falha com uma mensagem explícita se UAT for selecionado sem `UAT_URL`. Para voltar ao ambiente padrão, remova `TEST_ENVIRONMENT` da sessão ou defina-o como `dev`.
-
-## Execução
-
-Executar os testes em modo headless:
+### Rodar apenas os testes
 
 ```bash
 npm test
 ```
 
-Abrir o Cypress interativo:
-
-```bash
-npm run test:headed
-```
-
-Executar os testes e gerar/mesclar os relatórios:
+### Rodar os testes e gerar o relatório
 
 ```bash
 npm run report
 ```
 
-O relatório HTML e os arquivos JSON são gravados em `cypress/reports`; o relatório mesclado é gerado em `cypress/reports/html`.
+Para abrir o Cypress em modo interativo:
 
-> Os scripts `test` e `test:ci` usam `|| true` para permitir a geração do relatório mesmo quando há cenários com falha. Por isso, confira o resumo do Cypress e o relatório; o código de saída do npm não indica sozinho que todos os testes passaram.
+```bash
+npm run test:headed
+```
 
-## Organização
+No Windows PowerShell, use `npm.cmd` caso o comando `npm` esteja bloqueado pela política de execução:
 
-| Arquivo/pasta | Responsabilidade |
+```powershell
+npm.cmd test
+```
+
+```powershell
+npm.cmd run report
+```
+
+## 🌍 Ambientes
+
+As URLs são mantidas em `cypress/config/environments.js`; o ambiente padrão é `dev`. Os testes usam o `baseUrl` selecionado pela configuração do Cypress.
+
+| Ambiente | URL |
 | --- | --- |
-| `cypress/config/environments.js` | URLs dos ambientes local, dev e UAT |
-| `cypress/fixtures/api/common/methodRest.js` | Constantes dos métodos HTTP |
+| `local` | `http://localhost:3000` |
+| `dev` | `https://serverest.dev` |
+| `uat` | Definida em `UAT_URL` |
+
+Exemplos para PowerShell:
+
+```powershell
+# Ambiente local
+$env:TEST_ENVIRONMENT = 'local'
+npm.cmd test
+```
+
+```powershell
+# UAT: informe a URL real do ambiente
+$env:TEST_ENVIRONMENT = 'uat'
+$env:UAT_URL = 'https://seu-endereco-uat'
+npm.cmd test
+```
+
+UAT sem `UAT_URL` configurada é interrompido com uma mensagem explicativa. Para usar dev, defina `$env:TEST_ENVIRONMENT = 'dev'` ou remova a variável da sessão.
+
+## 🧭 Como a automação está organizada
+
+```mermaid
+flowchart TD
+	ROOT["test-quality-assurance/"] --> CYPRESS["cypress/"]
+	ROOT --> CONFIG["cypress.config.js"]
+	ROOT --> WORKFLOWS[".github/workflows/"]
+
+	CYPRESS --> E2E["e2e/Api/"]
+	E2E --> SPEC["CRUD-test.cy.js"]
+	CYPRESS --> FIXTURES["fixtures/"]
+	FIXTURES --> COMMON["api/common/"]
+	COMMON --> METHODS["methodRest.js"]
+	COMMON --> ENDPOINTS["endpoints.js"]
+	COMMON --> HEADERS["headers.js"]
+	FIXTURES --> PAYLOADS["payload/send/"]
+	PAYLOADS --> BODIES["user-api-bodies.json"]
+	CYPRESS --> SUPPORT["support/"]
+	SUPPORT --> COMMANDS["commands.js"]
+	CYPRESS --> PAGES["pages/"]
+	PAGES --> PAGE_FILES["Home.cy.js / Login.cy.js / Register.cy.js"]
+	CYPRESS --> REPORTS["reports/ e screenshots/"]
+```
+
+| Local | Responsabilidade |
+| --- | --- |
+| `cypress/config/environments.js` | URLs e seleção de ambiente |
+| `cypress/fixtures/api/common/methodRest.js` | Métodos HTTP (`GET`, `POST`, `PUT`, `DELETE`) |
 | `cypress/fixtures/api/common/endpoints.js` | Caminhos dos endpoints |
-| `cypress/fixtures/api/common/headers.js` | Headers JSON e funções de autorização |
-| `cypress/fixtures/payload/send/user-api-bodies.json` | Bodies e dados fixos usados nos cenários de usuários |
-| `cypress/e2e/Api/CRUD-test.cy.js` | Cenários de teste da API de usuários |
-| `cypress/support/commands.js` | Comandos Cypress reutilizáveis |
-| `cypress.config.js` | Seleção do ambiente, configuração do Cypress e Mochawesome |
+| `cypress/fixtures/api/common/headers.js` | Headers JSON e autorização |
+| `cypress/fixtures/payload/send/user-api-bodies.json` | Corpos de requisição e dados fixos |
+| `cypress/e2e/Api/CRUD-test.cy.js` | Cenários de API |
+| `cypress/support/commands.js` | Comandos reutilizáveis do Cypress |
+| `cypress/reports/` | Relatórios gerados durante a execução |
+| `cypress/screenshots/` | Evidências de cenários que falharam |
 
-Os e-mails dos usuários criados pelos testes são gerados com valores únicos a partir dos dados do fixture.
+Os e-mails de usuários criados são gerados com sufixo único por execução para reduzir conflitos entre cenários.
 
-## Cobertura
+## 🔄 Fluxo de execução
 
-- Login válido e credenciais inválidas
-- Listagem de usuários
-- Cadastro válido e rejeição de campos obrigatórios vazios
-- Consulta de usuário por ID e consulta de ID inexistente
-- Atualização de usuário
-- Exclusão de usuário e rejeição de exclusão quando há carrinho associado
+```mermaid
+flowchart LR
+	SPEC["Spec Cypress"] --> CYPRESS["Cypress"]
+	CYPRESS --> ENV["Ambiente selecionado\nlocal / dev / UAT"]
+	SPEC --> SHARED["Métodos + endpoints\n+ headers + payloads"]
+	ENV --> API["API Serverest"]
+	SHARED --> SPEC
+	CYPRESS --> JSON["Mochawesome JSON"]
+	CYPRESS --> HTML["Mochawesome HTML"]
+	JSON --> MERGED["Relatório mesclado\ncypress/reports/html"]
+```
 
-## Integração contínua
+## ✅ Cenários cobertos
 
-O workflow `.github/workflows/api-tests.yml` executa `npm run test:ci` em push para `main`/`master` e em pull requests, e publica `cypress/reports` como artefato.
+- Login válido e credenciais inválidas.
+- Listagem de usuários.
+- Cadastro válido e rejeição de campos obrigatórios vazios.
+- Busca por ID e tratamento de usuário inexistente.
+- Atualização de usuário.
+- Exclusão de usuário e rejeição quando existe carrinho associado.
 
-Os workflows usam Node.js 20, compatível com a versão do Cypress instalada neste projeto.
+## 📊 Relatórios
+
+O comando `npm run report` executa os testes, combina os arquivos JSON e gera o relatório HTML. Os resultados ficam em `cypress/reports/`; o HTML combinado fica em `cypress/reports/html/`.
+
+> **Atenção:** atualmente, os scripts `test` e `test:ci` incluem `|| true` para permitir que a geração do relatório continue mesmo com cenários falhando. Por isso, valide o resumo do Cypress ou abra o relatório; o código de saída do npm, sozinho, não garante que a suíte passou.
+
+## 🤖 Integração contínua
+
+Os workflows em `.github/workflows/` executam os testes em GitHub Actions e publicam relatórios como artefatos. Eles usam Node.js 20, compatível com o Cypress 15 deste projeto.
